@@ -1,0 +1,81 @@
+---
+- name: Set up EC2 instance with MongoDB, Docker, and Pokémon API
+  hosts: all
+  become: yes
+  tasks:
+    - name: Update all packages
+      yum:
+        name: '*'
+        state: latest
+
+    - name: Install git
+      yum:
+        name: git
+        state: present
+
+    - name: Create necessary directories
+      file:
+        path: "{{ item }}"
+        state: directory
+        owner: ec2-user
+      loop:
+        - /home/ec2-user/App
+        - /home/ec2-user/.aws
+
+    - name: Clone Pokémon API repository
+      git:
+        repo: https://github.com/roee4643/PokemonApi_MongoDB
+        dest: /home/ec2-user/App/PokemonApi_MongoDB
+        update: yes
+
+    - name: Ensure pip is installed and upgraded
+      command: python3 -m ensurepip --upgrade
+    - name: Upgrade pip
+      command: /usr/bin/python3 -m pip install --upgrade pip
+
+    - name: Add MongoDB repository
+      copy:
+        dest: /etc/yum.repos.d/mongodb-org-8.0.repo
+        content: |
+          [mongodb-org-8.0]
+          name=MongoDB Repository
+          baseurl=https://repo.mongodb.org/yum/amazon/2023/mongodb-org/8.0/x86_64/
+          gpgcheck=1
+          enabled=1
+          gpgkey=https://pgp.mongodb.com/server-8.0.asc
+
+    - name: Install MongoDB
+      yum:
+        name: mongodb-org
+        state: present
+
+    - name: Configure MongoDB to bind to all interfaces
+      lineinfile:
+        path: /etc/mongod.conf
+        regexp: '^bindIp:.*'
+        line: 'bindIp: 0.0.0.0'
+
+    - name: Start MongoDB service
+      systemd:
+        name: mongod
+        state: started
+        enabled: yes
+
+    - name: Install Docker
+      yum:
+        name: docker
+        state: present
+
+    - name: Start Docker service
+      systemd:
+        name: docker
+        state: started
+        enabled: yes
+
+    - name: Build Pokémon API Docker image
+      command: docker build -t pokemon-api .
+      args:
+        chdir: /home/ec2-user/App/PokemonApi_MongoDB/PokemonFlask-api
+
+    - name: Run Pokémon API Docker container
+      command: docker run -d -p 5000:5000 pokemon-api
