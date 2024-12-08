@@ -6,6 +6,9 @@ WORKDIR /app
 
 COPY . /app
 
+# Install git and other necessary system dependencies
+RUN apt-get update && apt-get install -y git && rm -rf /var/lib/apt/lists/*
+
 # Copy requirements.txt and install dependencies
 COPY requirements.txt ./
 
