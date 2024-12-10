@@ -27,28 +27,3 @@ class GetApi:
                 flag = 0      
                 return cleaned_text
                
-    
-    #removing non relevant charecters form the text
-    def clean_text(self,response):
-        text = re.sub(r'[^a-zA-Z0-9\s\n]', '', response)
-        return text
-
-
-    def create_photo(self, text, output_path):
-        image = image.open("https://thumbs.dreamstime.com/b/white-stone-words-positive-attitude-smile-face-color-glitter-boke-background-positive-attitude-stone-117351582.jpg")
-        draw = ImageDraw.Draw(image)
-            # Set font and size
-        font_path = "/usr/share/fonts/truetype/dejavu/DejaVuSans-Bold.ttf"  # Adjust to your font path
-        font = ImageFont.truetype(font_path, size=40)
-
-        # Define text positioning
-        image_width, image_height = image.size
-        text_width, text_height = draw.textsize(text, font=font)
-        x = (image_width - text_width) // 2
-        y = image_height - text_height - 20  # Add padding at the bottom
-
-        # Add text to the image
-        draw.text((x, y), text, font=font, fill="white", stroke_width=2, stroke_fill="black")
-
-        # Save the resulting image
-        image.save(output_path)
