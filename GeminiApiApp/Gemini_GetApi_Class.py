@@ -27,3 +27,9 @@ class GetApi:
                 flag = 0      
                 return cleaned_text
                
+    
+    #removing non relevant charecters form the text
+    def clean_text(self,response):
+        text = re.sub(r'[^a-zA-Z0-9\s\n]', '', response)
+        return text
+
