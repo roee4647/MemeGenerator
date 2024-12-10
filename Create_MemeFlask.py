@@ -10,10 +10,11 @@ create_meme = CreateMeme()
 @app.route('/create_photo', methods=['GET'])
 def get_api_response():
     meme_text = gemini_api.get_meme()
-    result = create_meme.create_photo({meme_text})
-    
+    print(meme_text)
+    create_meme.create_photo(meme_text)
+    return jsonify({"message" : "photo created succefully"}), 200
 
 
 
 if __name__ == '__main__':
-    app.run(host='0.0.0.0', port=5000)
+    app.run(host='0.0.0.0', port=5001)
