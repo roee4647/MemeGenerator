@@ -3,13 +3,15 @@ import google.generativeai as genai
 from textblob import TextBlob
 import re
 from PIL import Image, ImageDraw, ImageFont
-
+import os
 
 class GetApi:
 
     def __init__(self):
         # Set your API key
-        self.configure = genai.configure(api_key="AIzaSyBab5VArMDK59FsdW9hNgR3_5ASaV_tpJU")
+        api_key = os.getenv("GEMINI_API_KEY")
+        if not api_key:
+            raise ValueError("GEMINI_API_KEY environment variable not set.")
             # Create a model instance
         self.model = genai.GenerativeModel("gemini-pro")
 
