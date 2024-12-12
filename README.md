@@ -3,9 +3,9 @@ Multicultural meme generator
 
 # About Us
 We are passionate AWS re/Start learners, together building this project.
-<br>
-<img src="https://github.githubassets.com/assets/GitHub-Mark-ea2971cee799.png" alt="GitHub Logo" title="GitHub Logo" width="50"/>
+<br><br>
 
+<img src="https://github.githubassets.com/assets/GitHub-Mark-ea2971cee799.png" alt="GitHub Logo" title="GitHub Logo" width="50"/>
 Our GitHub Profiles: [Roei Ovadia](https://github.com/roee4643), [Jawad Khizran](https://github.com/Jawad-Khizran), and [Chen Bello](https://github.com/ChenBello).
 
 <br><br>
