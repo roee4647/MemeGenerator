@@ -14,7 +14,7 @@ COPY requirements.txt ./
 
 RUN pip install --no-cache-dir -r requirements.txt
 
-EXPOSE 5000
+EXPOSE 5001
 
 # Copy the rest of the application code into the container
 COPY . .
