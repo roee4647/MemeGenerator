@@ -1,6 +1,6 @@
 requests
 Flask
-google-generative-ai
+git+https://github.com/google/generative-ai-python.git
 textblob
 pillow
 pymongo
