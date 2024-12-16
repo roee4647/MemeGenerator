@@ -2,6 +2,22 @@ provider "aws" {
   region = "us-west-2"
 }
 
+resource "aws_secretsmanager_secret" "api_key" {
+  name        = "my-api-key"
+  description = "API Key for my application"
+}
+
+resource "aws_secretsmanager_secret_version" "api_key_version" {
+  secret_id     = aws_secretsmanager_secret.api_key.id
+  secret_string = var.api_key
+}
+   
+variable "api_key" {
+  description = "API Key for Gemini API"
+  type        = string
+}
+
+
 # Create a VPC
 resource "aws_vpc" "my_vpc" {
   cidr_block = "10.0.0.0/16"
@@ -51,6 +67,25 @@ resource "aws_subnet" "private_subnet_2" {
     Name = "Private_subnet2"
   }
 }
+
+# create s3 bucket
+
+resource "aws_s3_bucket" "meme-storage4643" {
+
+  bucket = "meme-storage4643"
+  acl    = "public-read"  # You can adjust the ACL as needed, e.g., 'public-read' for public access.
+
+   versioning {
+    enabled = true  # Enable versioning if required
+  }
+  lifecycle {
+    prevent_destroy = true  # Prevent accidental deletion of the bucket
+  }
+}
+
+
+
+
 
 # Create Internet Gateway
 resource "aws_internet_gateway" "igw" {
@@ -167,12 +202,26 @@ resource "aws_instance" "web_server_1" {
   key_name                    = "vockey"
   security_groups             = [aws_security_group.web_server_sg.id]  # Use security group ID instead of name
   
-  user_data = file("user_data.sh")
+  #user_data = file("user_data.sh")
   
   tags = {
-    Name = "web-server"
+    Name = "Meme-generator-server"
     }
 }
-   
 
+# Create a parameter in SSM with the public IP of the EC2 instance
+resource "aws_ssm_parameter" "public_ip" {
+  name        = "/Meme-generator-server/public_ip"
+  description = "Public IP of the EC2 instance"
+  type        = "String"
+  value       = "$aws_instance.web_server_1.public_ip"  # Correct reference to the EC2 instance's public IP
 
+  tags = {
+    Name = "PublicIPParameter"
+  }
+}
+
+# Output the parameter name
+output "parameter_name" {
+  value = aws_ssm_parameter.public_ip.name
+}
