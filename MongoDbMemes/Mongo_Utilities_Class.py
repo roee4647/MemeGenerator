@@ -5,8 +5,8 @@ from pymongo import MongoClient
 
 
 class Utilities:
-    def __init__(self,instance_ip):
-        self.instance_ip = instance_ip
+    def __init__(self):
+        
         self.client = MongoClient(f"mongodb://{self.instance_ip}:27017/")
         self.db = self.client["mydatabase"]  # Specify the database
         self.collection = self.db["Memes"]# Specify the collection
