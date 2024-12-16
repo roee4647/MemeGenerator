@@ -3,8 +3,7 @@ from Mongo_Utilities_Class import Utilities
 from Gemini_GetApi_Class import GetApi  # Import your script
 
 app = Flask(__name__)
-mongo_client= input("plese enter client ip: ")
-Mongo_Utilities = Utilities(mongo_client) # Instantiate my Utilitites class
+Mongo_Utilities = Utilities("") # Instantiate my Utilitites class
 GeminiApi = GetApi()
 
 
