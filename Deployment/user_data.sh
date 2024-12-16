@@ -13,20 +13,6 @@ git clone https://github.com/roee4647/MemeGenerator
 cd ..
 
 
-export GEMINI_API_KEY=$HOST_GEMINI_API_KEY
-
-
-echo $GEMINI_API_KEY
-
-#Gemini_key=$GEMINI_API_KEY
-
-
-
-echo "export GEMINI_API_KEY='$GEMINI_API_KEY'" >> /home/ec2-user/.bash_profile
-source /home/ec2-user/.bash_profile
-
-
-
 sudo tee /etc/yum.repos.d/mongodb-org-8.0.repo > /dev/null <<EOF
 [mongodb-org-8.0]
 name=MongoDB Repository
