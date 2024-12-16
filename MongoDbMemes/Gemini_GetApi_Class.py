@@ -11,8 +11,8 @@ class GetApi:
         # Set your API key
         api_key = os.getenv("GEMINI_API_KEY")
         genai.configure(GEMINI_API_KEY)
-        #if not api_key:
-            #raise ValueError("GEMINI_API_KEY environment variable not set.")
+        if not api_key:
+            raise ValueError("GEMINI_API_KEY environment variable not set.")
             # Create a model instance
         self.model = genai.GenerativeModel("gemini-pro")
 
