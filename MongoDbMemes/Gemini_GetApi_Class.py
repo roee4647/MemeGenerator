@@ -8,13 +8,14 @@ import os
 class GetApi:
 
     def __init__(self):
-        # Set your API key
-        api_key = os.getenv("GEMINI_API_KEY")
-        if not api_key:
+        GEMINI_API_KEY = os.getenv("GEMINI_API_KEY")
+        print(f"GEMINI_API_KEY: {GEMINI_API_KEY}")
+        if not GEMINI_API_KEY:
             raise ValueError("GEMINI_API_KEY environment variable not set.")
             # Create a model instance
-        genai.configure(GEMINI_API_KEY)
+        genai.configure(api_key=GEMINI_API_KEY)
         self.model = genai.GenerativeModel("gemini-pro")
+
 
     def get_meme(self):
 
