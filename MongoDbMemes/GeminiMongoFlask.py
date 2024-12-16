@@ -9,7 +9,7 @@ GeminiApi = GetApi()
 
 
 
-@app.route('/store_meme', methods=['PUT'])
+@app.route('/meme', methods=['GET'])
 def StoreMeme():
     """Endpoint to insert a random Pokémon's details into the database."""
     meme = GeminiApi.get_meme()
