@@ -2,20 +2,6 @@ provider "aws" {
   region = "us-west-2"
 }
 
-resource "aws_secretsmanager_secret" "api_key" {
-  name        = "my-api-key"
-  description = "API Key for my application"
-}
-
-resource "aws_secretsmanager_secret_version" "api_key_version" {
-  secret_id     = aws_secretsmanager_secret.api_key.id
-  secret_string = var.api_key
-}
-   
-variable "api_key" {
-  description = "API Key for Gemini API"
-  type        = string
-}
 
 
 # Create a VPC
@@ -202,26 +188,26 @@ resource "aws_instance" "web_server_1" {
   key_name                    = "vockey"
   security_groups             = [aws_security_group.web_server_sg.id]  # Use security group ID instead of name
   
-  #user_data = file("user_data.sh")
-  
   tags = {
     Name = "Meme-generator-server"
     }
 }
 
-# Create a parameter in SSM with the public IP of the EC2 instance
-resource "aws_ssm_parameter" "public_ip" {
-  name        = "/Meme-generator-server/public_ip"
-  description = "Public IP of the EC2 instance"
+# Store the EC2 public IP in SSM Parameter Store
+resource "aws_ssm_parameter" "ec2_public_ip" {
+  name        = "/ec2/public_ip"
+  description = "Public IP address of the EC2 instance"
   type        = "String"
-  value       = "$aws_instance.web_server_1.public_ip"  # Correct reference to the EC2 instance's public IP
+  value       = aws_instance.web_server_1.public_ip
 
   tags = {
-    Name = "PublicIPParameter"
+    Environment = "Terraform"
   }
 }
 
-# Output the parameter name
-output "parameter_name" {
-  value = aws_ssm_parameter.public_ip.name
-}
+# Output the public IP
+output "ec2_public_ip" {
+  value = aws_instance.web_server_1.public_ip
+  description = "The public IP of the EC2 instance"
+}  
+  
