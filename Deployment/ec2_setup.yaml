@@ -81,6 +81,7 @@
         published_ports:
           - "80:5001"
         env:
-          GEMINI_API_KEY: "AIzaSyBab5VArMDK59FsdW9hNgR3_5ASaV_tpJU"
+          GEMINI_API_KEY: "{{ lookup('env', 'GEMINI_API_KEY') }}"
+          EC2_PUBLIC_IP: "{{ lookup('env', 'EC2_PUBLIC_IP') }}"
       tags:
         - run_container
